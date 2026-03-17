@@ -1,15 +1,20 @@
+//Author: Roy Rozin   Date: 3/16/2026  Description: Class implementing a hashtable with get, put, and remove functions
+
 import java.util.*;
 import java.io.*;
 import java.util.function.Consumer;
 
 public class HashTable {
-    
     Entry[] arr;
 
+    //constructor for array
     public HashTable(){
         arr = new Entry[100]; 
     }
 
+    //pre-condition: key is not null
+    //post-condition: this function takes a key, and using an already made hash function, stores it in a certain index in the array
+    //if one spot is taken, it'll move over using linear probing
     public void put(String key, Object value) {
         int index = Math.abs(key.hashCode()) % arr.length;
 
@@ -23,6 +28,8 @@ public class HashTable {
         arr[index] = new Entry(key, (String)value);
     }
 
+    //pre-condition: key is not null
+    //post-condition: this method will return the value of a key given
     public String get(String key) {
         int index = Math.abs(key.hashCode()) % arr.length;
 
@@ -35,6 +42,8 @@ public class HashTable {
         return null;
     }
 
+    //pre-condition: key is not null
+    //post-condition: this method will remove an object stored based on the key, and then rehash all of the following elements
     public String remove(String key){
         int index = Math.abs(key.hashCode()) % arr.length;
 
@@ -62,6 +71,7 @@ public class HashTable {
         return new HashIterator();
     }
 
+    //print function that loops through and prints the values in the array
     public void print(){
         Iterator<String> iterator = keys();
         while(iterator.hasNext()){
@@ -153,13 +163,16 @@ public class HashTable {
         
     }
 
+    //iterator function
     private class HashIterator implements Iterator<String> {
         int index;
 
+        //constructor
         public HashIterator(){
             index = 0;
         }
 
+        //this method checks if there is another element in the array and returns true/false accordingly
         public boolean hasNext(){
             while(index < arr.length && arr[index] == null){
                 index++;
@@ -167,17 +180,20 @@ public class HashTable {
             return index < arr.length;
         }
 
+        //this method returns the next value in the array
         public String next(){
             if(!hasNext()){
                 return null;
             }
-            return arr[index++].key;
+            return arr[index++].value;
         }
 
+        //throws exception because not needed
         public void forEachRemaining(Consumer<? super String> action){
             throw new UnsupportedOperationException();
         }
 
+        //throws exception because not needed
         public void remove(){
             throw new UnsupportedOperationException();
         }
